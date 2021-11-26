@@ -1,5 +1,4 @@
 import { actionType } from "./Events";
-import events from "./Events";
 
 const reducerTodo = () => {
 
