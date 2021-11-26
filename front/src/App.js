@@ -6,7 +6,6 @@ const initialState = {
 };
 const Store = createContext(initialState)
 
-
 const Form = () => {
   const formRef = useRef(null);
   const { dispatch, state: { todo } } = useContext(Store);
@@ -125,13 +124,14 @@ const List = () => {
   const decorationDone = {
     textDecoration: 'line-through'
   };
+
   return <div>
-    <table >
+    <table className="table table-info table-hover mt-5">
       <thead>
         <tr>
-          <td>ID</td>
-          <td>Tarea</td>
-          <td>¿Completado?</td>
+          <th scope="col">ID</th>
+          <th scope="col">Tarea</th>
+          <th scope="col">¿Completado?</th>
         </tr>
       </thead>
       <tbody>
@@ -139,16 +139,16 @@ const List = () => {
           return <tr key={todo.id} style={todo.completed ? decorationDone : {}}>
             <td>{todo.id}</td>
             <td>{todo.name}</td>
-            <td><input type="checkbox" defaultChecked={todo.completed} onChange={(event) => onChange(event, todo)}></input></td>
-            <td><button onClick={() => onDelete(todo.id)}>Eliminar</button></td>
-            <td><button onClick={() => onEdit(todo)}>Editar</button></td>
+            <td><input className="form-check-input ms-2" type="checkbox" defaultChecked={todo.completed}
+              onChange={(event) => onChange(event, todo)}></input></td>
+            <td><button className="btn btn-danger" onClick={() => onDelete(todo.id)}>Eliminar</button></td>
+            <td><button className="btn btn-warning" onClick={() => onEdit(todo)}>Editar</button></td>
           </tr>
         })}
       </tbody>
     </table>
   </div>
 }
-
 
 
 function reducer(state, action) {
@@ -182,7 +182,7 @@ function reducer(state, action) {
     case 'add-item':
       const todoUp = state.todo.list;
       todoUp.push(action.item);
-      return { ...state, todo: {list: todoUp, item: {}} }
+      return { ...state, todo: { list: todoUp, item: {} } }
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-package co.com.sofka.crud;
+package com.example.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ public class TodoService {
     }
 
     public Todo get(Long id){
-         return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow();
     }
-
 }

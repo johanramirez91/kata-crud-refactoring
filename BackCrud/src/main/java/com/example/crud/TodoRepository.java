@@ -1,4 +1,4 @@
-package co.com.sofka.crud;
+package com.example.crud;
 
 import org.springframework.data.repository.CrudRepository;
 
