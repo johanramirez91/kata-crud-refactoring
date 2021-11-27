@@ -3,11 +3,11 @@ import Store from '../Store';
 import peticiones from './Petitions';
 import events from './Events';
 
-const Form = () => {
+export default function Form({ listId }) {
 
     const formRef = useRef(null);
-    const { dispatch, state: { todo } } = useContext(Store);
-    const item = todo.item;
+    const { dispatch, todo } = useContext(Store);
+    const item = todo.item[listId] ? todo.item[listId] : {};
     const [state, setState] = useState(item);
 
     const onAdd = (event) => {
@@ -19,9 +19,9 @@ const Form = () => {
             completed: false
         };
 
-        peticiones.save(item).then((response) => {
+        peticiones.save(listId, request).then((response) => {
             response.json().then((result) => {
-                dispatch(events.saved(result));
+                dispatch(events.saved(listId, result));
                 setState({ name: "" })
                 formRef.current.reset();
             })
@@ -37,7 +37,7 @@ const Form = () => {
             completed: item.completed
         };
 
-        peticiones.update(item).then((response) => {
+        peticiones.update(listId, request).then((response) => {
             response.json().then((result) => {
                 dispatch(events.updated(result));
                 setState({ name: "" })
@@ -66,4 +66,3 @@ const Form = () => {
     )
 }
 
-export default Form
