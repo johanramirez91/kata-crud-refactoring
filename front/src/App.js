@@ -1,21 +1,18 @@
 import React from "react";
-import Form from "./components/Form";
-import List from "./components/List";
-import StoreProviver from "./components/Store";
+import { StoreProvider } from "./components/Store";
+import { Form } from "./components/Form";
+import { List } from "./components/List";
 
 function App() {
   return (
-    <StoreProviver>
-      <div className="position-relative">
-        <div className="position-absolute top-0 start-50 translate-middle-x">
-          <h3>To-Do list</h3>
-          <hr />
-          <br />
-          <Form />
-          <List />
-        </div>
+    <StoreProvider>
+      <div className="container border border-info">
+        <h3>To-Do List</h3>
+        <hr />
+        <Form />
+        <List />
       </div>
-    </StoreProviver>)
+    </StoreProvider>)
 }
 
 export default App;

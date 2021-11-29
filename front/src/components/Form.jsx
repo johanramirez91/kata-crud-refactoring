@@ -1,8 +1,8 @@
-import React, { useContext, useRef, useState } from 'react'
-import { Store } from './Store';
-const HOST_API = "http://localhost:8080/api";
+import React, { useContext, useRef, useState } from 'react';
+import { HOST_API } from '../utils/HOST_API';
+import { Store } from "./Store";
 
-const Form = () => {
+export const Form = ({ id_category }) => {
     const formRef = useRef(null);
     const { dispatch, state: { todo } } = useContext(Store);
     const item = todo.item;
@@ -14,25 +14,25 @@ const Form = () => {
         const request = {
             name: state.name,
             id: null,
-            completed: false
+            completed: false,
+            category: id_category
         };
 
-        if (state.name !== undefined) {
-            fetch(HOST_API + "/todo", {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers: {
-                    'content-type': 'application/json'
-                }
-            })
-                .then(response => response.json())
-                .then((todo) => {
-                    dispatch({ type: "add-item", item: todo });
-                    setState({ name: "" });
-                    formRef.current.reset();
-                });
-        }
-    }
+
+        fetch(HOST_API + "/todo", {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then((todo) => {
+                dispatch({ type: "add-item", item: todo });
+                setState({ name: "" });
+                formRef.current.reset();
+            });
+    };
 
     const onEdit = (event) => {
         event.preventDefault();
@@ -40,45 +40,43 @@ const Form = () => {
         const request = {
             name: state.name,
             id: item.id,
-            completed: item.isCompleted
+            isCompleted: item.isCompleted,
+            category: item.category
         };
 
-        if (state.name !== undefined) {
-            fetch(HOST_API + "/todo", {
-                method: "PUT",
-                body: JSON.stringify(request),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => response.json())
-                .then((todo) => {
-                    dispatch({ type: "update-item", item: todo });
-                    setState({ name: "" });
-                    formRef.current.reset();
-                });
-        }
+
+        fetch(HOST_API + "/todo", {
+            method: "PUT",
+            body: JSON.stringify(request),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then((todo) => {
+                dispatch({ type: "update-item", item: todo });
+                setState({ name: "" });
+                formRef.current.reset();
+            });
+    };
+
+    const isEmpty = (name) => {
+        return (name === undefined || name.length === 0) ? true : false;
     }
 
-
-    return (
-        <>
-            <Form ref={formRef}>
-                <input
-                    className="form-control"
-                    type="text"
-                    name="name"
-                    placeholder="¿Qué harás hoy?"
-                    defaultValue={item.name}
-                    onChange={(event) => {
-                        setState({ ...state, name: event.target.value })
-                    }}
-                />
-                {item.id && <button className="btn btn-info" onClick={onEdit}>Editar</button>}
-                {!item.id && <button className="btn btn-primary" onClick={onAdd}>Nueva</button>}
-            </Form>
-        </>
-    )
-}
-
-export default Form;
+    return <form ref={formRef}>
+        <input
+            className="form-control"
+            type="text"
+            name="name"
+            placeholder="¿Qué piensas hacer hoy?"
+            defaultValue={item.name}
+            onChange={(event) => {
+                setState({ ...state, name: event.target.value });
+            }}></input>
+        <div className="d-grid gap-2 col-6 mx-auto">
+            {item.id && <button type="button" className="btn btn-info center-block" onClick={onEdit}>Actualizar</button>}
+            {!item.id && <button disabled={isEmpty(state.name)} type="button" className="btn btn-primary mb-3 mt-2" onClick={onAdd}>Crear</button>}
+        </div>
+    </form>;
+};

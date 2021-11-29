@@ -1,20 +1,18 @@
-import React, { createContext, useReducer } from "react";
-import reducer from "./Reducer";
+import React, { useReducer, createContext } from 'react';
+import { reducer } from './Reducer'
 
 const initialState = {
-    todo: {
-        list: [],
-        item: {}
-    }
-}
+    todo: { list: [], item: {} },
+    categoryList: { list: [], item: {} }
+};
 
 export const Store = createContext(initialState);
 
-const StoreProviver = ({ children }) => {
+export const StoreProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
     return <Store.Provider value={{ state, dispatch }}>
         {children}
-    </Store.Provider>
-}
+    </Store.Provider>;
 
-export default StoreProviver;
+};
