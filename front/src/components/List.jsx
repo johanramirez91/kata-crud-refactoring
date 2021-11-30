@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { HOST_API } from "../utils/HOST_API";
-import { Store } from "./Store";
+import { HOST_API } from "../utils/API";
+import { Store } from '../Store';
 
 export const List = () => {
-    const { dispatch, state: { todo } } = useContext(Store);
+    const { dispatch, state: { todo, list } } = useContext(Store);
     const currentList = todo.list;
 
     useEffect(() => {
@@ -65,6 +65,7 @@ export const List = () => {
             </tr>
         </thead>
         <tbody>
+            {list.length === 0 && <div>Lista vacia!</div>}
             {currentList.map((todo) => {
                 return <tr key={todo.id} style={todo.completed ? decorationDone : {}}>
                     <td>{todo.id}</td>
